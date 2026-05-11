@@ -1,6 +1,6 @@
 ---
 name: vibepresto
-description: Deploy or upload a static HTML/CSS/JS site to VibePresto on WordPress using the published CLI. Use when a user wants to log in, find a page, auto-bundle a local site folder, upload an existing bundle, or assign an uploaded bundle to a page. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or framework/build-pipeline sites.
+description: Deploy or upload a static HTML/CSS/JS site to VibePresto on WordPress using the published CLI. Use when a user wants to log in, create or manage pages, auto-bundle a local site folder, upload an existing bundle, or assign an uploaded bundle to a page. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or framework/build-pipeline sites.
 ---
 
 # VibePresto Deploy
@@ -11,7 +11,7 @@ Use this skill when the task is to deploy a local static site into the VibePrest
 
 - Device-style CLI login
 - Session inspection with `whoami`
-- Page lookup before assignment
+- Page listing, search, creation, status changes, and homepage assignment
 - Auto-bundling a local static site folder
 - Uploading an existing ZIP bundle
 - Uploading explicit HTML/CSS/JS/assets files
@@ -32,13 +32,18 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
 1. Confirm or establish auth:
    - `npx vibepresto whoami --site <site> --json`
    - if not logged in: `npx vibepresto login --site <site>`
-2. If the bundle should be assigned to a page, search first:
+2. If the bundle should be assigned to a page, inspect or create the page first:
+   - `npx vibepresto pages list --site <site> --json`
    - `npx vibepresto pages search --site <site> --query <text> --json`
+   - `npx vibepresto pages create --site <site> --title <title> --status draft --json`
 3. Choose the upload mode:
    - static site folder: `upload --site-dir`
    - existing ZIP: `upload --zip`
    - explicit files: `upload --html ... --css ... --js ...`
-4. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
+4. After upload, optionally finalize the page:
+   - `npx vibepresto pages set-status --site <site> --page-id <id> --status publish --json`
+   - `npx vibepresto pages set-homepage --site <site> --page-id <id> --json`
+5. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
 
 ## Upload modes
 
@@ -92,7 +97,7 @@ npx vibepresto upload \
 - Expect the CLI to return:
   - `ok: true` with `data` on success
   - `ok: false` with `error.code`, `error.message`, and `error.details` on failure
-- Use JSON mode when you need page IDs, assigned page URLs, or upload metadata like `auto_bundle`.
+- Use JSON mode when you need page IDs, page URLs, homepage state, assigned page URLs, or upload metadata like `auto_bundle`.
 
 ## Non-goals
 
