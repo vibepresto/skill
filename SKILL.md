@@ -21,7 +21,7 @@ Use this skill when the task is to deploy a local static site into the VibePrest
 
 Prefer the published CLI at:
 
-`npx @vibepresto/cli`
+`npx vibepresto`
 
 If the CLI repo is checked out locally for development, running `node ./bin/vibepresto.js` from that repo is also acceptable.
 
@@ -30,10 +30,10 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
 ## Recommended workflow
 
 1. Confirm or establish auth:
-   - `npx @vibepresto/cli whoami --site <site> --json`
-   - if not logged in: `npx @vibepresto/cli login --site <site>`
+   - `npx vibepresto whoami --site <site> --json`
+   - if not logged in: `npx vibepresto login --site <site>`
 2. If the bundle should be assigned to a page, search first:
-   - `npx @vibepresto/cli pages search --site <site> --query <text> --json`
+   - `npx vibepresto pages search --site <site> --query <text> --json`
 3. Choose the upload mode:
    - static site folder: `upload --site-dir`
    - existing ZIP: `upload --zip`
@@ -49,7 +49,7 @@ Use when the user has a simple static site folder with `index.html` at the root.
 Example:
 
 ```bash
-npx @vibepresto/cli upload \
+npx vibepresto upload \
   --site http://localhost:8000 \
   --site-dir ./site-folder \
   --name "Landing page" \
@@ -69,7 +69,7 @@ Rules:
 Use when the site is already prepared as a ZIP:
 
 ```bash
-npx @vibepresto/cli upload --site <site> --zip ./bundle.zip --json
+npx vibepresto upload --site <site> --zip ./bundle.zip --json
 ```
 
 ### Explicit files
@@ -77,7 +77,7 @@ npx @vibepresto/cli upload --site <site> --zip ./bundle.zip --json
 Use when the user has raw files instead of a folder:
 
 ```bash
-npx @vibepresto/cli upload \
+npx vibepresto upload \
   --site <site> \
   --html ./index.html \
   --css ./style.css \
