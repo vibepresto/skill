@@ -1,4 +1,4 @@
 interface:
   display_name: "VibePresto"
   short_description: "Deploy static sites to VibePresto with the CLI"
-  default_prompt: "Use $vibepresto to bundle and deploy a static HTML/CSS/JS site to a VibePresto WordPress instance."
+  default_prompt: "Use $vibepresto to bundle and deploy a static HTML/CSS/JS site to a VibePresto WordPress instance with the published VibePresto CLI."

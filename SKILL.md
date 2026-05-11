@@ -1,11 +1,11 @@
 ---
 name: vibepresto
-description: Deploy or upload a static HTML/CSS/JS site to VibePresto on WordPress using the local CLI. Use when a user wants to log in, find a page, auto-bundle a local site folder, upload an existing bundle, or assign an uploaded bundle to a page. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or framework/build-pipeline sites.
+description: Deploy or upload a static HTML/CSS/JS site to VibePresto on WordPress using the published CLI. Use when a user wants to log in, find a page, auto-bundle a local site folder, upload an existing bundle, or assign an uploaded bundle to a page. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or framework/build-pipeline sites.
 ---
 
 # VibePresto Deploy
 
-Use this skill when the task is to deploy a local static site into the VibePresto WordPress plugin through the repo CLI.
+Use this skill when the task is to deploy a local static site into the VibePresto WordPress plugin through the supported CLI surface.
 
 ## What this skill covers
 
@@ -19,19 +19,21 @@ Use this skill when the task is to deploy a local static site into the VibePrest
 
 ## Use the CLI, not wp-admin automation
 
-Prefer the local CLI at:
+Prefer the published CLI at:
 
-`node packages/vibepresto-cli/bin/vibepresto.js`
+`npx @vibepresto/cli`
+
+If the CLI repo is checked out locally for development, running `node ./bin/vibepresto.js` from that repo is also acceptable.
 
 Do not fall back to browser automation or direct REST calls unless the CLI is clearly blocked or the user explicitly asks for lower-level debugging.
 
 ## Recommended workflow
 
 1. Confirm or establish auth:
-   - `node packages/vibepresto-cli/bin/vibepresto.js whoami --site <site> --json`
-   - if not logged in: `node packages/vibepresto-cli/bin/vibepresto.js login --site <site>`
+   - `npx @vibepresto/cli whoami --site <site> --json`
+   - if not logged in: `npx @vibepresto/cli login --site <site>`
 2. If the bundle should be assigned to a page, search first:
-   - `node packages/vibepresto-cli/bin/vibepresto.js pages search --site <site> --query <text> --json`
+   - `npx @vibepresto/cli pages search --site <site> --query <text> --json`
 3. Choose the upload mode:
    - static site folder: `upload --site-dir`
    - existing ZIP: `upload --zip`
@@ -47,7 +49,7 @@ Use when the user has a simple static site folder with `index.html` at the root.
 Example:
 
 ```bash
-node packages/vibepresto-cli/bin/vibepresto.js upload \
+npx @vibepresto/cli upload \
   --site http://localhost:8000 \
   --site-dir ./site-folder \
   --name "Landing page" \
@@ -67,7 +69,7 @@ Rules:
 Use when the site is already prepared as a ZIP:
 
 ```bash
-node packages/vibepresto-cli/bin/vibepresto.js upload --site <site> --zip ./bundle.zip --json
+npx @vibepresto/cli upload --site <site> --zip ./bundle.zip --json
 ```
 
 ### Explicit files
@@ -75,7 +77,7 @@ node packages/vibepresto-cli/bin/vibepresto.js upload --site <site> --zip ./bund
 Use when the user has raw files instead of a folder:
 
 ```bash
-node packages/vibepresto-cli/bin/vibepresto.js upload \
+npx @vibepresto/cli upload \
   --site <site> \
   --html ./index.html \
   --css ./style.css \
