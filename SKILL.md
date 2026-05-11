@@ -1,6 +1,6 @@
 ---
 name: vibepresto
-description: Deploy or upload a static HTML/CSS/JS site to VibePresto on WordPress using the published CLI. Use when a user wants to log in, create or manage pages, auto-bundle a local site folder, upload an existing bundle, or assign an uploaded bundle to a page. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or framework/build-pipeline sites.
+description: Deploy or upload a static HTML/CSS/JS site to VibePresto on WordPress using the published CLI. Use when a user wants to log in, create or manage pages, manage bundle versions, auto-bundle a local site folder, upload an existing bundle, or assign an uploaded bundle to a page. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or framework/build-pipeline sites.
 ---
 
 # VibePresto Deploy
@@ -12,6 +12,7 @@ Use this skill when the task is to deploy a local static site into the VibePrest
 - Device-style CLI login
 - Session inspection with `whoami`
 - Page listing, search, creation, status changes, and homepage assignment
+- Bundle lineage listing, version history, and rollback
 - Auto-bundling a local static site folder
 - Uploading an existing ZIP bundle
 - Uploading explicit HTML/CSS/JS/assets files
@@ -40,10 +41,15 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
    - static site folder: `upload --site-dir`
    - existing ZIP: `upload --zip`
    - explicit files: `upload --html ... --css ... --js ...`
-4. After upload, optionally finalize the page:
+4. When uploading to a page that already has a bundle, treat the upload as the next version in that same lineage by default.
+5. Use bundle versioning commands when needed:
+   - `npx vibepresto bundles list --site <site> --json`
+   - `npx vibepresto bundles versions --site <site> --bundle-id <id> --json`
+   - `npx vibepresto bundles rollback --site <site> --page-id <id> --version <n> --json`
+6. After upload, optionally finalize the page:
    - `npx vibepresto pages set-status --site <site> --page-id <id> --status publish --json`
    - `npx vibepresto pages set-homepage --site <site> --page-id <id> --json`
-5. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
+7. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
 
 ## Upload modes
 
@@ -97,7 +103,7 @@ npx vibepresto upload \
 - Expect the CLI to return:
   - `ok: true` with `data` on success
   - `ok: false` with `error.code`, `error.message`, and `error.details` on failure
-- Use JSON mode when you need page IDs, page URLs, homepage state, assigned page URLs, or upload metadata like `auto_bundle`.
+- Use JSON mode when you need page IDs, page URLs, homepage state, bundle lineage IDs, bundle version numbers, assigned page URLs, or upload metadata like `auto_bundle`.
 
 ## Non-goals
 
