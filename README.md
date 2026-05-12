@@ -1,6 +1,6 @@
 # VibePresto Skill
 
-Codex skill for deploying static HTML/CSS/JS sites to a VibePresto-enabled WordPress instance.
+Codex skill for deploying simple static sites and framework-exported static builds to a VibePresto-enabled WordPress instance.
 
 ## Install
 
@@ -11,8 +11,9 @@ npx skills add vibepresto/skill
 ## What it does
 
 - prefers the published VibePresto CLI
-- checks auth before upload
-- searches pages before assignment
+- checks auth before upload or deploy
+- uses framework-aware `detect`, `build`, `verify`, and `routes inspect` flows
+- supports route-manifest and multi-page deployments
 - uses JSON output for agentic flows
 
 The skill definition lives in [SKILL.md](./SKILL.md).
