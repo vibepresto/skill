@@ -14,8 +14,8 @@ npx skills add vibepresto/skill
 - checks authentication before upload or deploy
 - uses framework-aware `detect`, `build`, `verify`, and `routes inspect` flows
 - supports route-manifest and multi-page deployments
-- can mark a page as the WordPress homepage or posts page through the CLI
-- can assign bundles to individual blog posts and set a default single-post template lineage
+- can mark a page as the WordPress Front page or Posts page through the CLI
+- can assign bundles to single posts and set a default single-post template lineage
 - validates WordPress `data-vp-*` placeholders in uploaded HTML
 - uses JSON output for agentic workflows
 
@@ -34,7 +34,7 @@ For a simple static page upload, the skill can still use:
 npx vibepresto upload --site https://your-site.example --site-dir ./landing-page --page-id 123 --json
 ```
 
-For a single blog post, the skill can also use:
+For a single post, the skill can also use:
 
 ```bash
 npx vibepresto upload --site https://your-site.example --site-dir ./post-template --post-id 789 --json
@@ -46,5 +46,7 @@ Placeholder example:
 ```html
 <h1 data-vp-source="post" data-vp-field="post_title">Fallback title</h1>
 ```
+
+This `post` source maps to the current queried `WP_Post` object, which may be a `page` or `post` post type depending on the request.
 
 The full skill definition lives in [SKILL.md](./SKILL.md).
