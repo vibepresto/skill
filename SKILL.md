@@ -1,6 +1,6 @@
 ---
 name: vibepresto
-description: Deploy static HTML/CSS/JS sites or framework-exported static builds to VibePresto on WordPress using the published CLI. Use when a user wants to log in, inspect pages, build and verify a frontend app, inspect routes, upload a bundle, create a multi-page deployment, or manage bundle/deployment history. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or SSR hosting.
+description: Deploy static HTML/CSS/JS sites or framework-exported static builds to VibePresto on WordPress using the published CLI. Use when a user wants to log in, inspect pages, build and verify a frontend app, inspect routes, upload a bundle, create a multi-page deployment, manage bundle/deployment history, or use `data-vp-*` placeholders for WordPress page data. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or SSR hosting.
 ---
 
 # VibePresto Deploy
@@ -11,7 +11,7 @@ Use this skill when the task is to deploy a local static site or static-exported
 
 - Device-style CLI login
 - Session inspection with `whoami`
-- Page listing, search, creation, status changes, homepage assignment
+- Page listing, search, creation, status changes, homepage assignment, and posts page assignment
 - Framework-aware `detect`, `build`, `verify`, and `routes inspect`
 - Auto-bundling a local static site folder
 - Uploading an existing ZIP bundle
@@ -20,6 +20,7 @@ Use this skill when the task is to deploy a local static site or static-exported
 - Bundle lineage listing, version history, and rollback
 - Deployment listing, inspection, promotion, and rollback
 - Logging out or revoking a saved session
+- Validation of WordPress placeholder markup such as `data-vp-source="post"` and `data-vp-field="post_title"`
 
 ## Use the CLI, not wp-admin automation
 
@@ -44,6 +45,7 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
    - `npx vibepresto build --project-dir <dir> --json`
    - or if already built: `npx vibepresto verify --output-dir <dir> --json`
    - `npx vibepresto routes inspect --output-dir <dir> --json`
+   - check `placeholder_count`, `placeholders`, and `warnings` in JSON output when the HTML uses `data-vp-*`
 4. Before first deployment on an unfamiliar project, prefer a dry run:
    - `npx vibepresto deploy --site <site> --output-dir <dir> --dry-run --json`
 5. For multi-page or router-based apps, prefer route-manifest deployment:
@@ -56,7 +58,10 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
    - `npx vibepresto deployments show --site <site> --deployment-id <id> --json`
    - `npx vibepresto deployments promote --site <site> --deployment-id <id> --bundle-version-id <id> --json`
    - `npx vibepresto deployments rollback --site <site> --deployment-id <id> --version <n> --json`
-7. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
+7. When the user wants a static template for the WordPress blog index, use:
+   - `npx vibepresto pages set-posts-page --site <site> --page-id <id> --json`
+   - this targets the WordPress posts page, not every individual single post template
+8. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
 
 ## Upload and deploy modes
 
@@ -79,7 +84,17 @@ Rules:
 
 - `index.html` must exist at the folder root.
 - The CLI validates local references before upload.
+- The CLI also validates `data-vp-*` placeholders and reports non-blocking warnings for unsupported source, field, or target usage.
 - Existing single-page uploads remain valid and should still be used when they fit the task.
+
+Example placeholder markup:
+
+```html
+<article>
+  <h1 data-vp-source="post" data-vp-field="post_title">Fallback title</h1>
+  <p data-vp-source="post" data-vp-field="post_excerpt">Fallback excerpt</p>
+</article>
+```
 
 ### Framework/static-export deployment
 
