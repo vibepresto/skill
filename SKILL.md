@@ -47,6 +47,7 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
    - or if already built: `npx vibepresto verify --output-dir <dir> --json`
    - `npx vibepresto routes inspect --output-dir <dir> --json`
    - check `placeholder_count`, `placeholders`, and `warnings` in JSON output when the HTML uses `data-vp-*`
+   - if `.vibepresto/config.json` exists, prefer its saved `site`, `projectDir`, `outputDir`, `uploadTarget`, `deployment.targets[]`, and `singlePostTemplate.lineageId` defaults unless the user explicitly overrides them
 4. Before first deployment on an unfamiliar project, prefer a dry run:
    - `npx vibepresto deploy --site <site> --output-dir <dir> --dry-run --json`
 5. For multi-page or router-based apps, prefer route-manifest deployment:
@@ -89,6 +90,7 @@ Rules:
 - `index.html` must exist at the folder root.
 - The CLI validates local references before upload.
 - The CLI also validates `data-vp-*` placeholders and reports non-blocking warnings for unsupported source, field, or target usage.
+- If `.vibepresto/config.json` defines `uploadTarget`, the skill can omit `--page-id` or `--post-id` and let the CLI resolve them from the active environment.
 - Existing single-page uploads remain valid and should still be used when they fit the task.
 
 Example placeholder markup:
@@ -125,8 +127,8 @@ This flow should:
 - run the static build/export locally
 - verify output integrity
 - inspect or infer routes
-- resolve existing WordPress pages
-- optionally create missing pages
+- use `deployment.targets[]` from `.vibepresto/config.json` when present for the active environment
+- otherwise resolve existing WordPress pages and optionally create missing pages
 - upload the bundle and create/update a deployment
 
 ### Prebuilt output directory

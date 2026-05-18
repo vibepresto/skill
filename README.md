@@ -14,6 +14,7 @@ npx skills add vibepresto/skill
 - checks authentication before upload or deploy
 - uses framework-aware `detect`, `build`, `verify`, and `routes inspect` flows
 - supports route-manifest and multi-page deployments
+- can use optional project-local defaults from `.vibepresto/config.json`
 - can mark a page as the WordPress Front page or Posts page through the CLI
 - can assign bundles to single posts and set a default single-post template lineage
 - validates WordPress `data-vp-*` placeholders in uploaded HTML
@@ -27,6 +28,14 @@ npx vibepresto build --project-dir ./my-app --json
 npx vibepresto routes inspect --output-dir ./my-app/dist --json
 npx vibepresto deploy --site https://your-site.example --output-dir ./my-app/dist --create-missing-pages --json
 ```
+
+If the project already has `.vibepresto/config.json`, the skill should prefer its saved environment defaults for:
+
+- `site`
+- `projectDir` and `outputDir`
+- `uploadTarget`
+- `deployment.targets[]`
+- `singlePostTemplate.lineageId`
 
 For a simple static page upload, the skill can still use:
 
