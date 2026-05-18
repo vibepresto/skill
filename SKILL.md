@@ -1,6 +1,6 @@
 ---
 name: vibepresto
-description: Deploy static HTML/CSS/JS sites or framework-exported static builds to VibePresto on WordPress using the published CLI. Use when a user wants to log in, inspect pages, build and verify a frontend app, inspect routes, upload a bundle, create a multi-page deployment, manage bundle/deployment history, or use `data-vp-*` placeholders for WordPress page data. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or SSR hosting.
+description: Deploy static HTML/CSS/JS sites or framework-exported static builds to VibePresto on WordPress using the published CLI. Use when a user wants to log in, inspect pages or posts, build and verify a frontend app, inspect routes, upload a bundle, create a multi-page deployment, manage bundle/deployment history, or use `data-vp-*` placeholders for WordPress page data. Do not use for wp-admin browser automation, direct REST calls when the CLI covers the task, or SSR hosting.
 ---
 
 # VibePresto Deploy
@@ -12,6 +12,7 @@ Use this skill when the task is to deploy a local static site or static-exported
 - Device-style CLI login
 - Session inspection with `whoami`
 - Page listing, search, creation, status changes, homepage assignment, and posts page assignment
+- Post listing, search, status changes, direct bundle assignment, and default single-post template assignment
 - Framework-aware `detect`, `build`, `verify`, and `routes inspect`
 - Auto-bundling a local static site folder
 - Uploading an existing ZIP bundle
@@ -61,7 +62,10 @@ Do not fall back to browser automation or direct REST calls unless the CLI is cl
 7. When the user wants a static template for the WordPress blog index, use:
    - `npx vibepresto pages set-posts-page --site <site> --page-id <id> --json`
    - this targets the WordPress posts page, not every individual single post template
-8. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
+8. When the user wants a single blog post permalink takeover:
+   - for one specific post: `npx vibepresto upload --site <site> --site-dir <dir> --post-id <id> --json`
+   - for the fallback template used across single posts: `npx vibepresto posts set-default-template --site <site> --lineage-id <id> --json`
+9. Prefer `--json` whenever the result needs to be parsed or used by another tool step.
 
 ## Upload and deploy modes
 
