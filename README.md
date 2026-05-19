@@ -12,6 +12,7 @@ npx skills add vibepresto/skill
 
 - prefers the published VibePresto CLI
 - checks authentication before upload or deploy
+- checks plugin-declared compatibility metadata and can suggest a skill upgrade
 - uses framework-aware `detect`, `build`, `verify`, and `routes inspect` flows
 - supports route-manifest and multi-page deployments
 - can use optional project-local defaults from `.vibepresto/config.json`
@@ -28,6 +29,10 @@ npx vibepresto build --project-dir ./my-app --json
 npx vibepresto routes inspect --output-dir ./my-app/dist --json
 npx vibepresto deploy --site https://your-site.example --output-dir ./my-app/dist --create-missing-pages --json
 ```
+
+The canonical machine-readable version for the skill lives in [`skill.json`](./skill.json).
+
+The [`agents/openai.yaml`](./agents/openai.yaml) file is OpenAI/Codex-specific UI metadata only. It is not the shared compatibility manifest, and it does not model Claude-style subagents.
 
 If the project already has `.vibepresto/config.json`, the skill should prefer its saved environment defaults for:
 

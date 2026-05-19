@@ -33,11 +33,22 @@ If the CLI repo is checked out locally for development, `node ./bin/vibepresto.j
 
 Do not fall back to browser automation or direct REST calls unless the CLI is clearly blocked or the user explicitly asks for lower-level debugging.
 
+## Version compatibility
+
+Treat `skill.json` as the canonical machine-readable version source for this skill.
+
+The `agents/openai.yaml` file is only OpenAI/Codex UI metadata. It is not the compatibility manifest and should not be used to determine the installed skill version.
+
+Claude-style subagents are a separate integration model and are not represented by `agents/openai.yaml` in this repository.
+
 ## Recommended workflow
 
 1. Confirm or establish auth:
    - `npx vibepresto whoami --site <site> --json`
    - if not logged in: `npx vibepresto login --site <site>`
+   - after `whoami`, inspect `data.compatibility.skill.minimum_version`
+   - read this skill's local version from `skill.json`
+   - if the plugin minimum skill version is newer than the installed skill version, warn the user and suggest: `npx skills add vibepresto/skill`
 2. Decide whether this is a simple static upload or a framework/static-export deployment:
    - simple static folder: use `upload --site-dir`
    - frontend project or prebuilt dist folder: use `detect`, `build` or `verify`, then `routes inspect`, then `deploy`
@@ -149,6 +160,7 @@ npx vibepresto deploy \
 - Expect:
   - `ok: true` with `data` on success
   - `ok: false` with `error.code`, `error.message`, and `error.details` on failure
+- `whoami` also returns plugin compatibility metadata. Use that to warn when the installed skill version in `skill.json` is below `data.compatibility.skill.minimum_version`.
 - Use JSON mode when you need page IDs, bundle version IDs, route manifests, deployment IDs, target mappings, or dry-run planning output.
 
 ## Non-goals
